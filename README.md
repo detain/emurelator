@@ -1,8 +1,8 @@
-# Emu⬅re➡lator
+# Emurelator
 
 ## About
 
-Provides an easy to use CLI to manage the varoius sources, emulators, platforms, etc and thier relations to one another.  Supports Bash and ZSH completion.  The purpose of this repo is to help generate and build the data for the [Emu⬅re➡lation](https://github.com/detain/emurelation) project which provides JSON mapping of platforms and emulators between various sources.
+Provides an easy to use CLI to manage the varoius sources, emulators, platforms, etc and thier relations to one another.  Supports Bash and ZSH completion.  The purpose of this repo is to help generate and build the data for the [Emurelation](https://github.com/detain/emurelation) project which provides JSON mapping of platforms and emulators between various sources.
 
 ## Requirements
 
