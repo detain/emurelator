@@ -1,0 +1,39 @@
+{
+	"name": "detain/emurelator",
+	"description": "Easy management of Virtualization technologies including KVM, Xen, OpenVZ, Virtuozzo, and LXC/LXD including unified commands, monitoring, template management, and many more features.",
+	"type": "project",
+	"keywords": [
+		"vps",
+		"kvm",
+		"virtuozzo",
+		"openvz",
+		"virtualization",
+		"xen",
+		"lxc",
+		"lxd"
+	],
+	"license": "LGPL-2.1-or-later",
+	"authors": [
+		{
+			"name": "Joe Huss",
+			"email": "detain@interserver.net"
+		}
+	],
+	"require": {
+                "corneltek/cliframework": "dev-master",
+                "league/climate": "*",
+                "php-school/cli-menu": "*"
+	},
+	"require-dev": {
+		"smarty/smarty": "*",
+		"twig/twig": ">=2.0@stable",
+		"phpdocumentor/reflection": "*",
+		"phpdocumentor/reflection-docblock": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\": "app/"
+		}
+	},
+	"minimum-stability": "dev"
+}
