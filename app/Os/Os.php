@@ -1,7 +1,7 @@
 <?php
 namespace App\Os;
 
-use App\Vps;
+use App\App;
 
 class Os
 {
@@ -11,8 +11,8 @@ class Os
     * @return string the main ip address
     */
 	public static function getIp() {
-		$defaultRoute = trim(Vps::runCommand('ip route list | grep "^default" | sed s#"^default.*dev "#""#g | head -n 1 | cut -d" " -f1'));
-		$ip = trim(Vps::runCommand("ifconfig {$defaultRoute} | grep inet | grep -v inet6 | awk '{ print $2 }' | cut -d: -f2"));
+		$defaultRoute = trim(App::runCommand('ip route list | grep "^default" | sed s#"^default.*dev "#""#g | head -n 1 | cut -d" " -f1'));
+		$ip = trim(App::runCommand("ifconfig {$defaultRoute} | grep inet | grep -v inet6 | awk '{ print $2 }' | cut -d: -f2"));
 		return $ip;
 	}
 
@@ -29,7 +29,7 @@ class Os
     * @return float redhat distro version
     */
 	public static function getRedhatVersion() {
-		return floatval(trim(Vps::runCommand("cat /etc/redhat-release |sed s#'^[^0-9]* \([0-9\.]*\).*$'#'\\1'#g")));
+		return floatval(trim(App::runCommand("cat /etc/redhat-release |sed s#'^[^0-9]* \([0-9\.]*\).*$'#'\\1'#g")));
 	}
 
     /**
@@ -37,7 +37,7 @@ class Os
     * @return float e2fsprogs version
     */
 	public static function getE2fsprogsVersion() {
-		return floatval(trim(Vps::runCommand("e2fsck -V 2>&1 |head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2")));
+		return floatval(trim(App::runCommand("e2fsck -V 2>&1 |head -n 1 | cut -d' ' -f2 | cut -d'.' -f1-2")));
 	}
 
     /**
@@ -65,7 +65,7 @@ class Os
     *
     */
 	public static function getCpuCount() {
-		preg_match('/CPU\(s\):\s+(\d+)/', Vps::runCommand("lscpu"), $matches);
+		preg_match('/CPU\(s\):\s+(\d+)/', App::runCommand("lscpu"), $matches);
 		return intval($matches[1]);
 	}
 
@@ -73,11 +73,11 @@ class Os
 	* checks the os dependancies making sure some things are installed
 	*/
 	public static function checkDeps() {
-		Vps::getLogger()->info('Checking for dependancy failures and fixing them');
+		App::getLogger()->info('Checking for dependancy failures and fixing them');
     	if (self::isRedhatBased() && self::getRedhatVersion() < 7) {
 			if (self::getE2fsprogsVersion() <= 1.41) {
 				if (!file_exists('/opt/e2fsprogs/sbin/e2fsck')) {
-					Vps::getLogger()->write(Vps::runCommand("/admin/ports/install e2fsprogs"));
+					App::getLogger()->write(App::runCommand("/admin/ports/install e2fsprogs"));
 				}
 			}
     	}

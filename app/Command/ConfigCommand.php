@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Vps;
+use App\App;
 use CLIFramework\Command;
 use CLIFramework\Formatter;
 use CLIFramework\Logger\ActionLogger;
@@ -22,10 +22,10 @@ class ConfigCommand extends Command {
 
     /** @param \CLIFramework\ArgInfoList $args */
 	public function arguments($args) {
-		$args->add('vzid')->desc('VPS id/name to use')->isa('string')->validValues([Vps::class, 'getAllVpsAllVirts']);
+		$args->add('vzid')->desc('VPS id/name to use')->isa('string')->validValues([App::class, 'getAllVpsAllVirts']);
 	}
 
 	public function execute($vzid) {
-		Vps::init($this->getOptions(), ['vzid' => $vzid]);
+		App::init($this->getOptions(), ['vzid' => $vzid]);
 	}
 }

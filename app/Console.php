@@ -2,7 +2,7 @@
 namespace App;
 
 use CLIFramework\Application;
-use App\Vps;
+use App\App;
 use App\Logger;
 
 class Console extends Application
@@ -15,11 +15,11 @@ class Console extends Application
         parent::init();
         $this->topic('basic');
         $this->topic('examples');
-        //Vps::setLogger($this->getLogger());
+        //App::setLogger($this->getLogger());
         $args = $_SERVER['argv'];
         array_shift($args);
-        Vps::setLogger(new Logger());
-        Vps::getLogger()->addHistory(['type' => 'program', 'text' => implode(' ', $args), 'start' => time()]);
+        App::setLogger(new Logger());
+        App::getLogger()->addHistory(['type' => 'program', 'text' => implode(' ', $args), 'start' => time()]);
         $minimumMemoryLimit = '1G';
         $minimumMemoryLimit = $this->getBytes($minimumMemoryLimit);
         $memoryLimit = $this->getBytes(ini_get('memory_limit'));
@@ -29,8 +29,8 @@ class Console extends Application
 
     public function finish() {
         parent::finish();
-        if (Vps::getLogger()->isHistoryEnabled()) {
-            $history = Vps::getLogger()->getHistory();
+        if (App::getLogger()->isHistoryEnabled()) {
+            $history = App::getLogger()->getHistory();
             if (count($history) > 1) {
                 $history[0]['end'] = time();
                 @mkdir($_SERVER['HOME'].'/.emurelator', 0750, true);

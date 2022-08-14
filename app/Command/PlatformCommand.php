@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Vps;
+use App\App;
 use CLIFramework\Command;
 use CLIFramework\Formatter;
 use CLIFramework\Logger\ActionLogger;

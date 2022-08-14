@@ -1,7 +1,7 @@
 <?php
 namespace App\Command\HistoryCommand;
 
-use App\Vps;
+use App\App;
 use App\Os\Xinetd;
 use CLIFramework\Command;
 use CLIFramework\Formatter;
@@ -23,11 +23,11 @@ class ShowCommand extends Command {
 
     /** @param \CLIFramework\ArgInfoList $args */
 	public function arguments($args) {
-		$args->add('id')->desc('History id to use or "last" for the latest entry')->isa('string')->validValues([Vps::class, 'getHistoryChoices']);
+		$args->add('id')->desc('History id to use or "last" for the latest entry')->isa('string')->validValues([App::class, 'getHistoryChoices']);
 	}
 
 	public function execute($id) {
-		Vps::init($this->getOptions(), ['id' => $id]);
+		App::init($this->getOptions(), ['id' => $id]);
         $allHistory = file_exists($_SERVER['HOME'].'/.emurelator/history.json') ? json_decode(file_get_contents($_SERVER['HOME'].'/.emurelator/history.json'), true) : [];
         if ($id == 'last')
         	$id = count($allHistory) - 1;

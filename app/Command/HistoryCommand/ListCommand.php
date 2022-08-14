@@ -1,7 +1,7 @@
 <?php
 namespace App\Command\HistoryCommand;
 
-use App\Vps;
+use App\App;
 use App\Os\Xinetd;
 use CLIFramework\Command;
 use CLIFramework\Formatter;
@@ -26,7 +26,7 @@ class ListCommand extends Command {
 	}
 
 	public function execute() {
-		Vps::init($this->getOptions(), []);
+		App::init($this->getOptions(), []);
         $allHistory = file_exists($_SERVER['HOME'].'/.emurelator/history.json') ? json_decode(file_get_contents($_SERVER['HOME'].'/.emurelator/history.json'), true) : [];
         if (count($allHistory) == 0) {
 			echo 'No history has been logged yet'.PHP_EOL;

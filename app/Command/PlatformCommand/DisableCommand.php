@@ -1,7 +1,7 @@
 <?php
 namespace App\Command\PlatformCommand;
 
-use App\Vps;
+use App\App;
 use CLIFramework\Command;
 use CLIFramework\Formatter;
 use CLIFramework\Logger\ActionLogger;
@@ -22,27 +22,27 @@ class DisableCommand extends Command {
 
     /** @param \CLIFramework\ArgInfoList $args */
 	public function arguments($args) {
-		$args->add('vzid')->desc('VPS id/name to use')->isa('string')->validValues([Vps::class, 'getAllVpsAllVirts']);
+		$args->add('vzid')->desc('VPS id/name to use')->isa('string')->validValues([App::class, 'getAllVpsAllVirts']);
 	}
 
 	public function execute($vzid) {
-		Vps::init($this->getOptions(), ['vzid' => $vzid]);
-		if (!Vps::isVirtualHost()) {
-			Vps::getLogger()->error("This machine does not appear to have any virtualization setup installed.");
-			Vps::getLogger()->error("Check the help to see how to prepare a virtualization environment.");
+		App::init($this->getOptions(), ['vzid' => $vzid]);
+		if (!App::isVirtualHost()) {
+			App::getLogger()->error("This machine does not appear to have any virtualization setup installed.");
+			App::getLogger()->error("Check the help to see how to prepare a virtualization environment.");
 			return 1;
 		}
-		if (!Vps::vpsExists($vzid)) {
-			Vps::getLogger()->error("The VPS '{$vzid}' you specified does not appear to exist, check the name and try again.");
+		if (!App::vpsExists($vzid)) {
+			App::getLogger()->error("The VPS '{$vzid}' you specified does not appear to exist, check the name and try again.");
 			return 1;
 		}
-		if (trim(Vps::runCommand("virsh dumpxml {$vzid}|grep \"disk.*cdrom\"")) == "") {
-			Vps::getLogger()->error("Skipping Removal, No CD-ROM Drive exists in VPS configuration");
+		if (trim(App::runCommand("virsh dumpxml {$vzid}|grep \"disk.*cdrom\"")) == "") {
+			App::getLogger()->error("Skipping Removal, No CD-ROM Drive exists in VPS configuration");
 		} else {
-			Vps::getLogger()->write(Vps::runCommand("virsh detach-disk {$vzid} hda --config"));
-			Vps::restartVps($vzid);
-			$base = Vps::$base;
-			Vps::getLogger()->write(Vps::runCommand("{$base}/vps_refresh_vnc.sh {$vzid}"));
+			App::getLogger()->write(App::runCommand("virsh detach-disk {$vzid} hda --config"));
+			App::restartVps($vzid);
+			$base = App::$base;
+			App::getLogger()->write(App::runCommand("{$base}/vps_refresh_vnc.sh {$vzid}"));
 		}
 	}
 
