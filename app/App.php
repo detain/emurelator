@@ -43,49 +43,6 @@ class App
 		}
 	}
 
-
-	/**
-	* returns an array containing information about the host server, vlans, and vps's
-	*
-	* @return array the host info
-	*/
-	public static function getHostInfo() {
-		$response = trim(self::runCommand('curl -s '.escapeshellarg(self::getUrl().'?action=get_info')));
-		$host = json_decode($response, true);
-		if (!is_array($host) || !isset($host['vlans'])) {
-			self::getLogger()->error("invalid response getting host info:".$response);
-			return false;
-		}
-		/* $vps = {
-			"id": "2324459",
-			"hostname": "vps2324459",
-			"vzid": "vps2324459",
-			"mac": "00:16:3e:23:77:eb",
-			"ip": "208.73.202.209",
-			"status": "active",
-			"server_status": "running",
-			"vnc": "79.156.208.231"
-		} */
-
-		@mkdir($_SERVER['HOME'].'/.emurelator', 0750, true);
-		file_put_contents($_SERVER['HOME'].'/.emurelator/host.json', $response);
-		return $host;
-	}
-
-	/**
-	* converts an order id into a mac address
-	*
-	* @param int $id
-	* @param bool $useAll
-	* @return string
-	*/
-	public static function convertIdToMac($id, $useAll) {
-		$prefix = $useAll == true ? '00:0C:29' : '00:16:3E';
-		$suffix = strtoupper(sprintf("%06s", dechex($id)));
-		$mac = $prefix.':'.substr($suffix, 0, 2).':'.substr($suffix, 2, 2).':'.substr($suffix, 4, 2);
-		return $mac;
-	}
-
 	public static function getHistoryChoices() {
 		$return = self::getLogger()->getHistory();
 		array_unshift($return, 'last');
