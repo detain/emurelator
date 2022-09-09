@@ -27,16 +27,14 @@ class AddCommand extends Command {
 
     public function execute($name) {
         App::init($this->getOptions(), ['name' => $name]);
-        //$jsonOpts = JSON_PRETTY_PRINT |  JSON_UNESCAPED_UNICODE |  JSON_UNESCAPED_SLASHES;
-        //file_put_contents($dataDir.'/emucontrolcenter.json', json_encode($data, $jsonOpts));
-        $local = App::loadSource('local');
-        if (!isset($local['companies'][$name])) {
-            $local['companies'][$name] = [
+        $data = App::loadSource('local');
+        if (!isset($data['companies'][$name])) {
+            $data['companies'][$name] = [
                 'id' => $name,
                 'name' => $name,
                 'matches' => []
             ];
-            App::saveSource('local', $local);
+            App::saveSource('local', $data);
             $this->getLogger()->writeln('Added company '.$name);
         } else {
             $this->getLogger()->writeln('Company '.$name.' already exists!');

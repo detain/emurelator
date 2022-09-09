@@ -27,10 +27,10 @@ class DelCommand extends Command {
 
     public function execute($name) {
         App::init($this->getOptions(), ['name' => $name]);
-        $local = App::loadSource('local');
-        if (isset($local['companies'][$name])) {
-            unset($local['companies'][$name]);
-            App::saveSource('local', $local);
+        $data = App::loadSource('local');
+        if (isset($data['companies'][$name])) {
+            unset($data['companies'][$name]);
+            App::saveSource('local', $data);
             $this->getLogger()->writeln('Deleted company '.$name);
         } else {
             $this->getLogger()->writeln('Company '.$name.' does not exist!');

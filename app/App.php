@@ -3,6 +3,7 @@ namespace App;
 
 use App\XmlToArray;
 use App\Os\Os;
+use CLIFramework\Component\Table\Table;
 
 /**
 * Provides OOP interface to virtualization technologies
@@ -47,6 +48,16 @@ class App
 		$return = self::getLogger()->getHistory();
 		array_unshift($return, 'last');
 	}
+
+    public static function tableFromArray($data) {
+        $table = new Table;
+        //$table->setStyle(new MarkdownTableStyle());
+        $table->setHeaders(['Name']);
+        foreach ($data as $idx => $row) {
+            $table->addRow([$row['name']]);
+        }
+        echo $table->render();
+    }
 
     public static function getEmurelationPath() {
         return __DIR__.'/../../emurelation';
