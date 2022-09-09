@@ -30,6 +30,14 @@ class AddCommand extends Command {
         App::init($this->getOptions(), ['name' => $name]);
         $data = App::loadSource('local');
         $id = $company.' '.$name;
+        if (!isset($data['companies'][$company])) {
+            $data['companies'][$company] = [
+                'id' => $company,
+                'name' => $company,
+                'matches' => []
+            ];
+            $this->getLogger()->writeln('Added company '.$company);
+        }
         if (!isset($data['platforms'][$id])) {
             $data['platforms'][$id] = [
                 'id' => $id,
