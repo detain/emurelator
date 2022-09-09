@@ -8,9 +8,9 @@ use CLIFramework\Logger\ActionLogger;
 use CLIFramework\Debug\LineIndicator;
 use CLIFramework\Debug\ConsoleDebug;
 
-class AddCommand extends Command {
+class DelCommand extends Command {
     public function brief() {
-        return "Add a company.";
+        return "Deletes a company.";
     }
 
     /** @param \GetOptionKit\OptionCollection $opts */
@@ -27,19 +27,13 @@ class AddCommand extends Command {
 
     public function execute($name) {
         App::init($this->getOptions(), ['name' => $name]);
-        //$jsonOpts = JSON_PRETTY_PRINT |  JSON_UNESCAPED_UNICODE |  JSON_UNESCAPED_SLASHES;
-        //file_put_contents($dataDir.'/emucontrolcenter.json', json_encode($data, $jsonOpts));
         $local = App::loadSource('local');
-        if (!isset($local['companies'][$name])) {
-            $local['companies'][$name] = [
-                'id' => $name,
-                'name' => $name,
-                'matches' => []
-            ];
+        if (isset($local['companies'][$name])) {
+            unset($local['companies'][$name]);
             App::saveSource('local', $local);
-            $this->getLogger()->writeln('Added company '.$name);
+            $this->getLogger()->writeln('Deleted company '.$name);
         } else {
-            $this->getLogger()->writeln('Company '.$name.' already exists!');
+            $this->getLogger()->writeln('Company '.$name.' does not exist!');
         }
     }
 }
