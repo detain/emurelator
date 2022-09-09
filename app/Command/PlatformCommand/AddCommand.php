@@ -22,22 +22,25 @@ class AddCommand extends Command {
 
     /** @param \CLIFramework\ArgInfoList $args */
     public function arguments($args) {
-        $args->add('name')->desc('name of the company')->isa('string');
+        $args->add('company')->desc('name of the company')->isa('string');
+        $args->add('name')->desc('name of the platform')->isa('string');
     }
 
-    public function execute($name) {
+    public function execute($company, $name) {
         App::init($this->getOptions(), ['name' => $name]);
         $data = App::loadSource('local');
-        if (!isset($data['platforms'][$name])) {
-            $data['platforms'][$name] = [
-                'id' => $name,
+        $id = $company.' '.$name;
+        if (!isset($data['platforms'][$id])) {
+            $data['platforms'][$id] = [
+                'id' => $id,
                 'name' => $name,
+                'company' => $company,
                 'matches' => []
             ];
             App::saveSource('local', $data);
-            $this->getLogger()->writeln('Added company '.$name);
+            $this->getLogger()->writeln('Added Platform '.$id);
         } else {
-            $this->getLogger()->writeln('Platform '.$name.' already exists!');
+            $this->getLogger()->writeln('Platform '.$id.' already exists!');
         }
     }
 }
