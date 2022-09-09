@@ -31,11 +31,13 @@ class AddCommand extends Command {
         if (!isset($data['emulators'][$name])) {
             $data['emulators'][$name] = [
                 'id' => $name,
+                'shortName' => $name,
                 'name' => $name,
+                'platforms' => [],
                 'matches' => []
             ];
             App::saveSource('local', $data);
-            $this->getLogger()->writeln('Added company '.$name);
+            $this->getLogger()->writeln('Added Emulator '.$name);
         } else {
             $this->getLogger()->writeln('Emulator '.$name.' already exists!');
         }
