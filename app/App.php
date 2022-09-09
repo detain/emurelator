@@ -48,6 +48,40 @@ class App
 		array_unshift($return, 'last');
 	}
 
+    public static function getEmurelationPath() {
+        return __DIR__.'/../../emurelation';
+    }
+
+    public static function loadSource($source) {
+        $data = json_decode(trim(file_get_contents(self::getEmurelationPath().'/sources/'.$source.'.json')), true);
+        return $data;
+    }
+
+    public static function loadSources() {
+        $data = json_decode(trim(file_get_contents(self::getEmurelationPath().'/sources.json')), true);
+        return $data;
+    }
+
+    public static function sortSource(&$data) {
+        $types = array_keys($data);
+        foreach ($types as $type) {
+            ksort($data[$type]);
+        }
+    }
+
+    public static function saveSource($source, $data) {
+        file_put_contents(self::getEmurelationPath().'/sources/'.$source.'.json', json_encode($data, self::getJsonOpts()));
+    }
+
+    public static function saveSources($data) {
+        file_put_contents(self::getEmurelationPath().'/sources.json', json_encode($data, self::getJsonOpts()));
+    }
+
+    public static function getJsonOpts() {
+        return JSON_PRETTY_PRINT |  JSON_UNESCAPED_UNICODE |  JSON_UNESCAPED_SLASHES;
+    }
+
+
 	/**
 	* runs a commnand
 	*
