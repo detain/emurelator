@@ -70,6 +70,7 @@ class App
     }
 
     public static function saveSource($source, $data) {
+        self::sortSource($data);
         file_put_contents(self::getEmurelationPath().'/sources/'.$source.'.json', json_encode($data, self::getJsonOpts()));
     }
 
