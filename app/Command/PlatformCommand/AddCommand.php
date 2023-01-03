@@ -28,7 +28,7 @@ class AddCommand extends Command {
 
     public function execute($company, $name) {
         App::init($this->getOptions(), ['name' => $name]);
-        $data = App::loadSource('local');
+        $data = App::loadSourceId('local');
         $id = $company.' '.$name;
         if (!isset($data['companies'][$company])) {
             $data['companies'][$company] = [

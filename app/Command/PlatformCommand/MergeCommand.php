@@ -22,7 +22,7 @@ class MergeCommand extends Command {
 
     /** @param \CLIFramework\ArgInfoList $args */
     public function arguments($args) {
-        $args->add('from')->desc('name of the platform to copy the data from and ultimate remove')->isa('string');
+        $args->add('from')->desc('name of the platform to copy the data from and ultimately remove')->isa('string');
         $args->add('to')->desc('name of the platform to store the combined data of both')->isa('string');
     }
 

@@ -10,7 +10,7 @@ use CLIFramework\Debug\ConsoleDebug;
 
 class AddCommand extends Command {
     public function brief() {
-        return "Add a company.";
+        return "Add a emulator.";
     }
 
     /** @param \GetOptionKit\OptionCollection $opts */

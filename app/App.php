@@ -63,9 +63,40 @@ class App
         return __DIR__.'/../../emurelation';
     }
 
-    public static function loadSource($source) {
-        $data = json_decode(trim(file_get_contents(self::getEmurelationPath().'/sources/'.$source.'.json')), true);
-        return $data;
+
+
+    public static function loadSourceId($sourceId) {
+        $source = [];
+        foreach (['platforms', 'companies', 'emulators', 'games'] as $type) {
+            $fileName = self::getEmurelationPath().'/'.$type.'/'.$sourceId.'.json';
+            if (file_exists($fileName)) {
+                $source[$type] = json_decode(file_get_contents($fileName), true);
+            }
+        }
+        return $source;
+    }
+
+    public static function loadSourceType($sourceId, $type) {
+        $source = [
+            $type => json_decode(file_get_contents(self::getEmurelationPath().'/'.$type.'/'.$sourceId.'.json'), true)
+        ];
+        return [$sourceId, $type, $source[$type]];
+    }
+
+    public static function loadAllSources() {
+        echo 'Loading sources..';
+        $sources = [];
+        foreach (['platforms', 'companies', 'emulators', 'games'] as $type) {
+            foreach (glob(self::getEmurelationPath().'/'.$type.'/*.json') as $fileName) {
+                $sourceId = basename($fileName, '.json');
+                if (!isset($sources[$sourceId])) {
+                    $sources[$sourceId] = [];
+                }
+                list($sourceId, $type, $sources[$sourceId][$type]) = loadSource($fileName);
+            }
+        }
+        echo 'done'.PHP_EOL;
+        return $sources;
     }
 
     public static function loadSources() {
@@ -82,7 +113,9 @@ class App
 
     public static function saveSource($source, $data) {
         self::sortSource($data);
-        file_put_contents(self::getEmurelationPath().'/sources/'.$source.'.json', json_encode($data, self::getJsonOpts()));
+        foreach ($data as $type => $typeData) {
+            file_put_contents(self::getEmurelationPath().'/'.$type.'/'.$source.'.json', json_encode($typeData, self::getJsonOpts()));
+        }
     }
 
     public static function saveSources($data) {
